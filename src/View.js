@@ -115,6 +115,12 @@ define('Sage/Platform/Mobile/View', [
          * Called on loading of the application.
          */
         init: function() {
+            if (this._destroyed) {
+                this._started = false;
+                this.refreshRequired = true;// TODO: Can we preserve the previous fetch and just re-render?
+                this.create();
+            }
+
             this.startup();
             this.initConnects();
         },
@@ -262,6 +268,9 @@ define('Sage/Platform/Mobile/View', [
          */
         transitionAway: function() {
             this.onTransitionAway(this);
+            this._started = false;
+            this.destroyRendering();
+            this.destroyRecursive(false);
         },
         /**
          * Returns the primary SDataService instance for the view.

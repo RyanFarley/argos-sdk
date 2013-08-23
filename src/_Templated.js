@@ -255,9 +255,11 @@ function(domConstruct, declare, query, parser, array, lang, registry, wai) {
             }, this);
             this._attachPoints = [];
 
-			// And same for event handlers
-			array.forEach(this._attachEvents, this.disconnect, this);
-			this._attachEvents = [];
+            // And same for event handlers
+            array.forEach(this._attachEvents, this.disconnect, this);
+            array.forEach(this._connects, this.disconnect, this);
+            array.forEach(this._supportingWidgets, this.disconnect, this);
+            this._attachEvents = [];
 
             this.inherited(arguments);
         }

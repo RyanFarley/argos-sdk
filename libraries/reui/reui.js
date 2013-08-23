@@ -374,8 +374,7 @@ ReUI = {};
 
             // more often than not, data will only be needed when moving to a previous view (and restoring its state).
             
-            if (page)
-                R.show(page, {external: true, reverse: reverse, tag: info && info.tag, data: info && info.data});
+            R.show(page || info.page, {external: true, reverse: reverse, tag: info && info.tag, data: info && info.data, page: info.page});
         }         
     };
 

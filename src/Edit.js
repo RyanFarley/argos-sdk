@@ -1260,6 +1260,18 @@ define('Sage/Platform/Mobile/Edit', [
                         this.requestData();
                 }
             }
+        },
+        uninitialize: function() {
+            var field, fieldName;
+            for(fieldName in this.fields) {
+                field = this.fields[fieldName];
+                if (field && field.destroyRendering && field.destroyRecursive) {
+                    field.destroyRendering();
+                    field.destroyRecursive(false);
+                }
+            }
+
+            this.fields = {};
         }
     });
 });

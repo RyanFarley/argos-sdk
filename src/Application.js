@@ -30,6 +30,7 @@ define('Sage/Platform/Mobile/Application', [
     'dojo/_base/lang',
     'dojo/_base/window',
     'dojo/string',
+    'dojo/aspect',
     'dojo/has',
     'dojo/_base/sniff',
     'dojo/dom-construct',
@@ -44,6 +45,7 @@ define('Sage/Platform/Mobile/Application', [
     lang,
     win,
     string,
+    aspect,
     has,
     sniff,
     domConstruct,
@@ -200,6 +202,13 @@ define('Sage/Platform/Mobile/Application', [
             window.location.hash = '';
 
             ReUI.init();
+
+            aspect.before(ReUI, 'show', lang.hitch(this, function(page, o) {
+                var view;
+                if (typeof page === 'string') {
+                    view = this.getView(page);
+                }
+            }));
         },
         /**
          * If caching is enable and App is {@link #isOnline online} the empties the SData cache via {@link #_clearSDataRequestCache _clearSDataRequestCache}.
@@ -497,7 +506,6 @@ define('Sage/Platform/Mobile/Application', [
                     view.init();
                     view.placeAt(view._placeAt, 'first');
                     view._started = true;
-                    view._placeAt = null;
                 }
                 
                 return view;
