@@ -428,7 +428,11 @@ define('Sage/Platform/Mobile/List', [
          */
         listActionItemTemplate: new Simplate([
             '<button data-action="invokeActionItem" data-id="{%= $.actionIndex %}" aria-label="{%: $.title || $.id %}">',
-                '<img src="{%= $.icon %}" alt="{%= $.id %}" />',
+                '<img src="{%= $.icon %}" alt="{%= $.id %}" ',
+                '{% if ($.iconWidth && $.iconHeight) { %}',
+                    'width="{%= $.iconWidth %}" height="{%= $.iconHeight %}" ',
+                '{% } %}',
+                '/>',
                 '<label>{%: $.label %}</label>',
             '</button>'
         ]),
