@@ -691,6 +691,16 @@ define('Sage/Platform/Mobile/List', [
         listLoading: false,
 
         /**
+         * The related view definitions for related views for each row.
+         */
+        relatedViews: null,
+
+        /**
+         * The related view managers for each related view definition.
+         */
+        relatedViewManagers: null,
+
+        /**
          * Setter method for the selection model, also binds the various selection model select events
          * to the respective List event handler for each.
          * @param {SelectionModel} selectionModel The selection model instance to save to the view
@@ -724,6 +734,7 @@ define('Sage/Platform/Mobile/List', [
          * Extends dijit Widget postCreate to setup the selection model, search widget and bind
          * to the global refresh publish
          */
+        _onScrollHandle: null,
         postCreate: function() {
             this.inherited(arguments);
 
@@ -731,10 +742,6 @@ define('Sage/Platform/Mobile/List', [
                 this.set('selectionModel', new ConfigurableSelectionModel());
 
             this.subscribe('/app/refresh', this._onRefresh);
-
-            if (this.continuousScrolling) {
-                this.connect(this.domNode, 'onscroll', this.onScroll);
-            }
 
             if (this.enableSearch) {
                 var searchWidgetCtor = lang.isString(this.searchWidgetClass)
@@ -914,9 +921,6 @@ define('Sage/Platform/Mobile/List', [
             this.onApplyRowActionPanel(this.actionsNode, rowNode);
 
             domConstruct.place(this.actionsNode, rowNode, 'after');
-
-            if (this.actionsNode.offsetTop + this.actionsNode.clientHeight + 48 > document.documentElement.clientHeight)
-                this.actionsNode.scrollIntoView(false);
         },
         onApplyRowActionPanel: function(actionNodePanel, rowNode) {
 
@@ -1431,6 +1435,10 @@ define('Sage/Platform/Mobile/List', [
 
             domClass.remove(this.domNode, 'list-loading');
             this.listLoading = false;
+
+            if (!this._onScrollHandle && this.continuousScrolling) {
+                this._onScrollHandle = this.connect(this.domNode, 'onscroll', this.onScroll);
+            }
         },
         /**
          * Initiates the SData request.
@@ -1590,10 +1598,16 @@ define('Sage/Platform/Mobile/List', [
                 this._selectionModel.resumeEvents();
             }
 
-            this.requestedFirstPage = false;
             this.entries = {};
             this.feed = false;
             this.query = false; // todo: rename to searchQuery
+            this.defaultSearchTermSet = false;
+            this.hasSearched = false;
+            
+            if (this._onScrollHandle) {
+                this.disconnect(this._onScrollHandle);
+                this._onScrollHandle = null;
+            }
 
             if (all !== false && this.searchWidget) this.searchWidget.clear();
 
@@ -1607,23 +1621,42 @@ define('Sage/Platform/Mobile/List', [
                 this.searchWidget.search();
             }
         },
+        /**
+        * Sets the query value on the serach widget
+        */
         setSearchTerm: function(value) {
             if (this.searchWidget) {
                 this.searchWidget.set('queryValue', value);
             }
         },
-        relatedViews: null,
-        relatedViewManagers:{},
+        /**
+         * Sets and returns the related view definition, this method should be overriden in the view
+         * so that you may define the related views that will be add to each row in the list.
+         * @return {Object} this.relatedViews
+         */
         createRelatedViewLayout: function() {
             return this.relatedViews || (this.relatedViews = {});
         },
+        /**
+         *  Destroies all of the realted view widgets, that was added.
+         */
         destroyRelatedViewWidgets: function() {
-            for (var relatedViewId in this.relatedViewManagers) {
-                this.relatedViewManagers[relatedViewId].destroyViews();
+            if (this.relatedViewManagers) {
+                for (var relatedViewId in this.relatedViewManagers) {
+                    this.relatedViewManagers[relatedViewId].destroyViews();
+                }
             }
         },
+        /**
+         * Gets the related view mnagager for a related view definition. 
+         * If a manager is not found a new Related View Manager is created and returned.
+         * @return {Object} RelatedViewManager
+         */
        getRelatedViewManager: function(relatedView) {
             var relatedViewManager, options;
+            if (!this.relatedViewManagers)            {
+                this.relatedViewManagers = {};
+            }
             if (this.relatedViewManagers[relatedView.id]) {
                 relatedViewManager = this.relatedViewManagers[relatedView.id];
             } else {
@@ -1634,7 +1667,16 @@ define('Sage/Platform/Mobile/List', [
                 this.relatedViewManagers[relatedView.id] = relatedViewManager;
             }
             return relatedViewManager;
-        },
+       },
+        /**
+         * called form Process feed method to process each entry and row node and add the realted view widgets for all realted views defined.
+         *
+         * Add the each entry and row to the RelateView manager wich in turn creates the new related view and renders its content with in the current row.`
+         *
+         * @param {Object} entry the current entry from the feed.
+         * @param {Object} rownode the current dom node to add the widget to.
+         * @param {Object} feed the sData feed.
+         */
         onProcessRelatedViews: function(entry, rowNode, feed) {
             var relatedViewManager,i;
             if (this.relatedViews.length > 0) {
