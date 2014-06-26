@@ -314,24 +314,6 @@ define('Sage/Platform/Mobile/Application', [
                 this.modules[i].init(this);
         },
         /**
-         * Loops through views and calls their `init()` function.
-        */
-        initViews: function() {
-            var n, view;
-            for (n in this.views) {
-                view = this.views[n];
-                this.initView(view);
-            }
-        },
-        initView: function(view) {
-            if (view) {
-                view.init();
-                view.placeAt(view._placeAt, 'first');
-                view._started = true;
-                view._placeAt = null;
-            }
-        },
-        /**
          * Loops through (tool)bars and calls their `init()` function.
          */
         initToolbars: function() {
@@ -355,7 +337,6 @@ define('Sage/Platform/Mobile/Application', [
             this._startupConnections();
             this.initModules();
             this.initToolbars();
-            this.initViews();
             this.initReUI();
         },
         /**
@@ -557,10 +538,6 @@ define('Sage/Platform/Mobile/Application', [
 
             view._placeAt = domNode || this._rootDomNode;
 
-            if (this._started) {
-                this.initView(view);
-            }
-
             this.onRegistered(view);
 
             return this;
@@ -643,6 +620,13 @@ define('Sage/Platform/Mobile/Application', [
                     view = this.views[key];
                 } else if (typeof key.id === 'string') {
                     view = this.views[key.id];
+                }
+
+                if (view && !view._started) {
+                    view.init();
+                    view.placeAt(view._placeAt, 'first');
+                    view._started = true;
+                    view._placeAt = null;
                 }
 
                 return view;
