@@ -1,4 +1,8 @@
 /*2px solid @icon-color;*/
+.hide-element {
+  position: absolute;
+  left: -9999px;
+}
 /* Overthrow CSS:
    Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
 .overthrow-enabled .overthrow {
@@ -31,11 +35,6 @@
 .right-drawer {
   visibility: hidden;
   display: none;
-}
-.left-drawer,
-.right-drawer {
-  display: none;
-  visibility: hidden;
 }
 .snapjs-left .left-drawer {
   visibility: visible;
@@ -79,6 +78,9 @@
   -o-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
 }
+.hidden {
+  display: none;
+}
 .snapjs-expand-left .drawer-inner,
 .snapjs-expand-right .drawer-inner {
   opacity: 0;
@@ -106,9 +108,6 @@
 }
 .list-content > li {
   cursor: pointer;
-}
-.list-search .dismissButton {
-  display: none;
 }
 .list-more,
 .list-empty-opt {
@@ -359,7 +358,8 @@
 }
 /* fields */
 .row-hidden {
-  display: none;
+  position: absolute;
+  left: -9999px;
 }
 .row-disabled > div > button,
 .row-disabled > div > input,
@@ -459,17 +459,6 @@
   border: none;
   background-color: #b4b9be;
 }
-.list-search .dismissButton {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  position: absolute;
-  display: inline-block;
-  height: 32px;
-  width: 32px;
-  right: 70px;
-  top: 6px;
-  border: solid 1px black;
-}
 .list-search label {
   position: absolute;
   top: 6px;
@@ -533,16 +522,6 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
   text-align: center;
   z-index: 100;
 }
-.list-search .dismissButton {
-  cursor: pointer;
-  font-size: 0.9em;
-  line-height: 30px;
-  text-align: center;
-  border-style: solid;
-  border-color: #000;
-  border-width: 1px 0 1px 1px;
-  z-index: 100;
-}
 .list-search label {
   color: #aaa;
   font-size: 0.9em !important;
@@ -552,9 +531,6 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox]) {
 }
 .search-active label {
   display: none;
-}
-.search-active .dismissButton {
-  display: block;
 }
 .search-widget button.clear-button {
   position: static;
@@ -776,7 +752,8 @@ body[orient="landscape"] {
 body > .viewContainer > .list,
 body > .viewContainer > .panel,
 body > .viewContainer > .dialog {
-  display: none;
+  position: absolute;
+  left: -9999px;
 }
 body.transition > .viewContainer > .panel,
 body.transition > .viewContainer > .list {
@@ -812,7 +789,7 @@ body[orient="landscape"] > .viewContainer > .list {
   transition-timing-function: ease, ease;
 }
 body > .viewContainer > [selected="true"] {
-  display: block;
+  left: 0px;
 }
 .button {
   height: 36px;
@@ -991,18 +968,21 @@ img {
   border: 0 none black;
 }
 .panel > .panel-loading-indicator {
-  display: none;
+  position: absolute;
+  left: -9999px;
 }
 .panel > .panel-validation-summary {
-  display: none;
+  position: absolute;
+  left: -9999px;
 }
 .panel-loading > .panel-loading-indicator {
-  display: block;
+  position: static;
   margin: 0;
   padding: 0;
 }
 .panel-form-error > .panel-validation-summary {
-  display: block;
+  position: static;
+  left: 0px;
 }
 .panel-content > h2,
 .panel-validation-summary > h2 {
@@ -1220,7 +1200,8 @@ img {
   background: url('../../../images/arrow-right-black.png') no-repeat scroll 0 50%;
 }
 .related-view-widget .hidden {
-  display: none;
+  position: absolute;
+  left: -9999px;
 }
 .related-view-widget .action-items {
   color: #6a97cb;

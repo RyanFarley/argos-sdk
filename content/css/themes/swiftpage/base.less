@@ -35,13 +35,6 @@
     display: none;
 }
 
-.left-drawer,
-.right-drawer
-{
-    display: none;
-    visibility: hidden;
-}
-
 .snapjs-left .left-drawer {
     visibility: visible;
     display: block;
@@ -90,6 +83,10 @@
     transition: opacity 0.3s ease;
 }
 
+.hidden {
+    display: none;
+}
+
 .snapjs-expand-left .drawer-inner,
 .snapjs-expand-right .drawer-inner
 {
@@ -112,11 +109,6 @@
 .list-content > li
 {
     cursor: pointer;
-}
-
-.list-search .dismissButton
-{
-    display: none;
 }
 
 .list-more, .list-empty-opt
@@ -457,7 +449,7 @@
 /* fields */
 .row-hidden
 {
-    display: none;
+    .hide-element();
 }
 
 .row-disabled > div > button,
@@ -577,18 +569,6 @@
     background-color: @button-bg-color;
 }
 
-.list-search .dismissButton {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    position: absolute;
-    display: inline-block;
-    height: 32px;
-    width: 32px;
-    right: 70px;
-    top: 6px;
-    border: solid 1px black;
-}
-
 .list-search label
 {
     position: absolute;
@@ -666,18 +646,6 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox])
     z-index: 100;
 }
 
-.list-search .dismissButton
-{
-    cursor: pointer;
-    font-size: 0.9em;
-    line-height: 30px;
-    text-align: center;
-    border-style: solid;
-    border-color: #000;
-    border-width: 1px 0 1px 1px;
-    z-index: 100;
-}
-
 .list-search label
 {
     color: #aaa;
@@ -690,11 +658,6 @@ div.table-layout div input:not([type|=radio]):not([type|=checkbox])
 .search-active label
 {
     display: none;
-}
-
-.search-active .dismissButton
-{
-    display: block;
 }
 
 .search-widget button.clear-button
@@ -948,7 +911,7 @@ body > .viewContainer > .list,
 body > .viewContainer > .panel,
 body > .viewContainer > .dialog
 {
-    display: none;
+    .hide-element();
 }
 
 body.transition > .viewContainer > .panel,
@@ -990,7 +953,7 @@ body[orient="landscape"] > .viewContainer > .list
 
 body > .viewContainer > [selected="true"]
 {
-    display: block;
+    left: 0px;
 }
 
 .button
@@ -1217,24 +1180,25 @@ img
 
 .panel > .panel-loading-indicator
 {
-    display: none;
+    .hide-element();
 }
 
 .panel > .panel-validation-summary
 {
-    display: none;
+    .hide-element();
 }
 
 .panel-loading > .panel-loading-indicator
 {
-    display: block;
+    position: static;
     margin: 0;
     padding: 0;
 }
 
 .panel-form-error > .panel-validation-summary
 {
-    display: block;
+    position: static;
+    left: 0px;
 }
 
 .panel-content > h2,
@@ -1514,7 +1478,7 @@ img
 }
 .related-view-widget  .hidden
 {
-   display:none;
+   .hide-element();
 }
 .related-view-widget .action-items
 {

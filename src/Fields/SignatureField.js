@@ -97,7 +97,7 @@ define('Sage/Platform/Mobile/Fields/SignatureField', [
             '<label for="{%= $.name %}">{%: $.label %}</label>',
             '<button class="button simpleSubHeaderButton" aria-label="{%: $.signatureLabelText %}"><span aria-hidden="true">{%: $.signatureText %}</span></button>',
             '<img data-dojo-attach-point="signatureNode" src="" width="{%: $.config.width %}" height="{%: $.config.height %}" alt="" />',
-            '<input data-dojo-attach-point="inputNode" type="hidden">'
+            '<legend class="hidden"></legend><input data-dojo-attach-point="inputNode" type="hidden">'
         ]),
         /**
          * Extends the {@link EditorField#createNavigationOptions parent} implementation by
