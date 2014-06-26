@@ -104,7 +104,7 @@ define('Sage/Platform/Mobile/Fields/_Field', [
          * Simplate used to define the fields HTML Markup
          */
         widgetTemplate: new Simplate([
-            '<legend class="hidden"></legend><input data-dojo-attach-point="inputNode">'
+            '<input data-dojo-attach-point="inputNode">'
         ]),
         /**
          * @property {HTMLElement}

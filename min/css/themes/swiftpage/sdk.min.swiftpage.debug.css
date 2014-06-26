@@ -78,9 +78,6 @@
   -o-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
 }
-.hidden {
-  display: none;
-}
 .snapjs-expand-left .drawer-inner,
 .snapjs-expand-right .drawer-inner {
   opacity: 0;

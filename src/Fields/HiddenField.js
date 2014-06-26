@@ -54,7 +54,7 @@ define('Sage/Platform/Mobile/Fields/HiddenField', [
          *
          */
         widgetTemplate: new Simplate([
-            '<legend class="hidden"></legend><input data-dojo-attach-point="inputNode" type="hidden">'
+            '<input data-dojo-attach-point="inputNode" type="hidden">'
         ]),
         /**
          * @deprecated
